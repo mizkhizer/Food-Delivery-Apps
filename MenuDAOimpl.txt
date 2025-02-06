@@ -1,0 +1,224 @@
+package DAO_Implementation;
+
+import java.sql.Blob;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.Utility.DBConnection;
+
+import User.java.Menu;
+import User.java.UserId;
+
+
+
+
+public class MenuDAOimpl 
+{
+	
+	private static final int menuId = 0;
+	private static final Blob imagePath = null;
+	String INSERT_MENU_QUERY = "INSERT INTO MENU (restaurantId, itemName, description, price, rating, isAvailable, imagePath) " + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+	String GET_MENU_QUERY = "SELECT * FROM MENU WHERE menuId = ?";
+	String UPDATE_MENU_QUERY = "UPDATE MENU SET restaurantId = ?, itemName = ?, description = ?, price = ?, rating = ?, isAvailable = ?, imagePath = ? " + "WHERE menuId = ?";
+	String DELETE_MENU_QUERY = "DELETE FROM MENU WHERE menuId = ?";
+	String GET_ALL_MENU_QUERY = "SELECT * FROM MENU WHERE restaurantId = ?";
+	private int restaurantId;
+	private String itemName;
+	private boolean isAvailable;
+	
+		
+	
+	
+		
+		public void addMenu(Menu menu) 
+		{
+			 
+			        try (Connection connection = DBConnection.getConnection();
+			             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_MENU_QUERY)) {
+
+			            preparedStatement.setInt(1, menu.getRestaurantId());
+			            preparedStatement.setString(2, menu.getItemName());
+			            preparedStatement.setString(3, menu.getDescription());
+			            preparedStatement.setDouble(4, menu.getPrice());
+			            preparedStatement.setDouble(5, menu.getRating());
+			            preparedStatement.setString(6, menu.getIsAvailable());
+			            preparedStatement.setBlob(7, menu.getImagePath());
+
+			            preparedStatement.executeUpdate();
+			        } 
+			        catch (SQLException e) 
+			        {
+			            e.printStackTrace();
+			        }
+			
+		}
+
+		
+		
+		
+		
+		
+		
+		
+		
+		@SuppressWarnings("unchecked")
+		public List<Menu> getMenu(int menuId) 
+		{
+			  
+				List<Menu> menuList = new ArrayList<>();
+		        try
+		        {
+		        	Connection connection = DBConnection.getConnection();
+		        	PreparedStatement preparedStatement = connection.prepareStatement(GET_MENU_QUERY);
+
+		            preparedStatement.setInt(1, menuId);
+		            ResultSet resultSet = preparedStatement.executeQuery();
+
+		            while (resultSet.next()) 
+		            {
+		              menuList = (List<Menu>) extractUser(resultSet);
+		              menuList.addAll(menuList);
+		              
+		            }
+		        } 
+		        catch (SQLException e) 
+		        {
+		            e.printStackTrace();
+		        }
+
+		        return menuList;
+		}
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public void updateMenu(Menu menu) 
+		{
+			 
+
+			        try (Connection connection = DBConnection.getConnection();
+			             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_MENU_QUERY)) {
+
+			            preparedStatement.setInt(1, menu.getRestaurantId());
+			            preparedStatement.setString(2, menu.getItemName());
+			            preparedStatement.setString(3, menu.getDescription());
+			            preparedStatement.setDouble(4, menu.getPrice());
+			            preparedStatement.setDouble(5, menu.getRating());
+			            preparedStatement.setString(6, menu.getIsAvailable());
+			            preparedStatement.setBlob(7, menu.getImagePath());
+			            preparedStatement.setInt(8, menu.getMenuId());
+
+			            preparedStatement.executeUpdate();
+			        } catch (SQLException e) {
+			            e.printStackTrace();
+			        }
+			
+		}
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public void deleteMenu(int menuId) 
+		{
+			 
+
+		        try (Connection connection = DBConnection.getConnection();
+		             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_MENU_QUERY)) {
+
+		            preparedStatement.setInt(1, menuId);
+		            preparedStatement.executeUpdate();
+		        } catch (SQLException e) {
+		            e.printStackTrace();
+		        }
+			
+		}
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public List<Menu> getAllManuByRestaurent(int resturantId) 
+		{
+			 
+		        List<Menu> menuList = new ArrayList<>();
+
+		        try 
+		        {
+		        	Connection connection = DBConnection.getConnection();
+		        	PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_MENU_QUERY); 
+
+		            preparedStatement.setInt(1, resturantId);
+		            ResultSet resultSet = preparedStatement.executeQuery();
+
+		            while (resultSet.next()) 
+		            {
+		                Menu menu = extractUser(resultSet);
+		                menuList.add(menu);
+		            }
+		        }
+		        catch (SQLException e) 
+		        {
+		            e.printStackTrace();
+		        }
+
+		        return menuList;
+		}
+		
+		
+		
+		
+		
+		
+		
+        Menu extractUser(ResultSet res) throws SQLException
+		{
+			int Menu = res.getInt("menuId");
+			String restaurant = res.getString("restaurantId");
+			String username = res.getString("itemName");
+			String description = res.getString("description");
+			String price = res.getString("price");
+			String rating = res.getString("rating");
+			String Available = res.getString("isAvailable");
+			Blob Image = res.getBlob("imagePath");
+			
+			Menu user = new Menu(menuId, restaurantId, itemName, description, price, rating, isAvailable, imagePath);
+			
+			return user;
+		}
+		
+	  
+}
+

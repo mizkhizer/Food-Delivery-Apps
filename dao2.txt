@@ -1,0 +1,22 @@
+package DAO.java;
+
+import java.util.List;
+
+import DAO_Implementation.RestaurantDAOimpl;
+import User.java.Restaurant;
+
+
+public interface dao2 
+{
+	
+		void addRestaurant1(Restaurant restaurant);  
+	   
+	    void updateRestaurant(RestaurantDAOimpl restaurant);   
+	    void deleteRestaurant(int restaurantId); 
+	    List<Restaurant> getAllRestaurants();
+		void addRestaurant(Restaurant restaurant);
+		void updateRestaurant(Restaurant restaurant);
+		Restaurant getRestaurantId(int restaurantId);
+		
+	
+}

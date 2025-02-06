@@ -1,0 +1,17 @@
+package DAO.java;
+
+import java.util.List;
+
+import User.java.Menu;
+
+public interface dao5 
+{
+	
+		void addManu(Menu manu);    
+	    Menu getManu(int manuId);  
+	    void updateManu(Menu manu);
+	    void deleteManu(int manuId); 
+	    List<Menu> getAllManuByRestaurent(int reesturantId);
+
+	
+}

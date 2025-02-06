@@ -1,0 +1,19 @@
+package DAO.java;
+
+import java.util.List;
+
+import User.java.Order;
+
+
+  // Make sure to import the OrderItem class.
+
+public interface dao4 
+{
+	void addOrderItem(Order orderItem);   
+    Order getOrderItem(int orderItemId);  
+    void updateOrderItem(Order orderItem);   
+    void deleteOrderItem(int orderItemId);
+    List<Order> getAllOrderItems(int OrderId);
+	void addOrderItem1(Order orderItem);
+	void updateOrderitem(Order orderItem);
+}

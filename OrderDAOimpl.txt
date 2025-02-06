@@ -1,0 +1,185 @@
+package DAO_Implementation;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.Utility.DBConnection;
+
+import DAO.java.dao4;
+import User.java.Order;
+
+
+
+
+public class OrderDAOimpl 
+{
+	public final static String INSERT_ORDER_QUERY = "INSERT INTO ORDER (userId, restaurantId, orderDate, totalAmount, status, paymentMode) " + "VALUES (?, ?, ?, ?, ?, ?)";
+	public final static String GET_ORDER_QUERY = "SELECT * FROM ORDER WHERE orderId = ?";
+	public final static String UPDATE_ORDER_QUERY = "UPDATE ORDER SET userId = ?, restaurantId = ?, orderDate = ?, totalAmount = ?, status = ?, paymentMode = ? " + "WHERE orderId = ?";
+	public final static String DELETE_ORDER_QUERY = "DELETE FROM ORDER WHERE orderId = ?";
+	public final static String GET_ALL_ORDERS_QUERY = "SELECT * FROM ORDER";
+
+	public class OrderDAImpl implements dao4 
+	{
+
+		@Override
+		public void addOrderItem1(Order orderItem) {
+			 
+
+			        try (Connection connection = DBConnection.getConnection();
+			             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ORDER_QUERY)) {
+
+			            preparedStatement.setInt(1,orderItem.getUserId());
+			            preparedStatement.setInt(2, orderItem.getRestaurantId());
+			            preparedStatement.setDate(3,orderItem.getOrderDate());
+			            preparedStatement.setDouble(4, orderItem.getTotalAmount());
+			            preparedStatement.setString(5,orderItem.getStatus());
+			            preparedStatement.setString(6,orderItem.getPaymentMode());
+
+			            preparedStatement.executeUpdate();
+			        } catch (SQLException e) {
+			        	 e.printStackTrace();
+			        }
+			
+		}
+
+		@Override
+		public Order getOrderItem(int orderItemId) 
+		{
+			 
+		        Order order = null;
+
+		        try (Connection connection = DBConnection.getConnection();
+		             PreparedStatement preparedStatement = connection.prepareStatement(GET_ORDER_QUERY)) {
+
+		            preparedStatement.setInt(1, orderItemId);
+		            ResultSet resultSet = preparedStatement.executeQuery();
+
+		            if (resultSet.next()) 
+		            {
+		                order = new Order
+		                (
+		                    resultSet.getInt("orderId"),
+		                    resultSet.getInt("userId"),
+		                    resultSet.getInt("restaurantId"),
+		                    resultSet.getString("orderDate"),
+		                    resultSet.getDouble("totalAmount"),
+		                    resultSet.getString("status"),
+		                    resultSet.getString("paymentMode")
+		                );
+		            }
+		        } catch (SQLException e) {
+		        	 e.printStackTrace();
+		        }
+
+		        return order;
+		}
+
+		@Override
+		public void updateOrderitem(Order orderItem) {
+			 
+
+			        try (Connection connection = DBConnection.getConnection();
+			             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ORDER_QUERY)) {
+
+			            preparedStatement.setInt(1, orderItem.getUserId());
+			            preparedStatement.setInt(2, orderItem.getRestaurantId());
+			            preparedStatement.setDate(3, orderItem.getOrderDate());
+			            preparedStatement.setDouble(4, orderItem.getTotalAmount());
+			            preparedStatement.setString(5, orderItem.getStatus());
+			            preparedStatement.setString(6, orderItem.getPaymentMode());
+			            preparedStatement.setInt(7, orderItem.getOrderId());
+
+			            preparedStatement.executeUpdate();
+			        } catch (SQLException e) {
+			        	 e.printStackTrace();
+			        }
+		}
+
+		@Override
+		public void deleteOrderItem(int orderItemId) 
+		{
+			 
+
+		        try (Connection connection = DBConnection.getConnection();
+		             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ORDER_QUERY)) {
+
+		            preparedStatement.setInt(1, orderItemId);
+		            preparedStatement.executeUpdate();
+		        } catch (SQLException e) {
+		        	 e.printStackTrace();
+		        }
+			
+		}
+
+		@Override
+		public List<Order> getAllOrderItems(int orderId) 
+		{
+			  
+		        List<Order> orders = new ArrayList<>();
+
+		        try (Connection connection = DBConnection.getConnection();
+		             PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_ORDERS_QUERY)) {
+
+		            ResultSet resultSet = preparedStatement.executeQuery();
+
+		            while (resultSet.next()) {
+		                Order order = new Order(
+		                    resultSet.getInt("orderId"),
+		                    resultSet.getInt("userId"),
+		                    resultSet.getInt("restaurantId"),
+		                    resultSet.getString("orderDate"),
+		                    resultSet.getDouble("totalAmount"),
+		                    resultSet.getString("status"),
+		                    resultSet.getString("paymentMode")
+		                );
+		                orders.add(order); 
+		            }
+		        } catch (SQLException e) {
+		        	 e.printStackTrace();
+		        }
+
+		        return orders;
+		    }
+
+		
+		
+		
+		@Override
+		public void addOrderItem(Order orderItem) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void updateOrderItem(Order orderItem) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		}
+
+	public int getOrderId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int getMenuId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int getQuantity() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int getTotalPrice() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+}

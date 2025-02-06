@@ -1,0 +1,15 @@
+package DAO.java;
+
+import java.util.List;
+
+import User.java.UserId;
+
+public interface dao1 
+{
+	void addUser(UserId user);
+	UserId getUserId(int uerId);
+	void updateUserId(UserId user);
+	void deleteUserId(int userId);
+	List<UserId> getAllUsers();
+	
+}

@@ -1,0 +1,16 @@
+package DAO.java;
+
+import java.util.List;
+
+import DAO_Implementation.OrderItemDAOimpl.OrderltemDAImpl;
+import User.java.Orderitem;
+
+public interface dao3 
+{
+	        void addOrderItem(Orderitem orderItem);
+		    Orderitem getOrderItem(int orderItemId);
+		    void updateOrderItem(OrderltemDAImpl orderItem);
+		    void deleteOrderItem(int orderItemId);
+		    List<Orderitem> getAllOrderItems(int orderId);
+	
+}

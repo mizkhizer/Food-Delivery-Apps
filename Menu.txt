@@ -1,0 +1,87 @@
+package User.java;
+
+import java.sql.Blob;
+
+public class Menu 
+{
+	private int menuId;
+	private int restaurantId;
+	private String itemName;
+	private String description;
+	private int price;
+	private int rating;
+	private String isAvailable;
+	private Blob imagePath;
+	
+	public Menu(int i, int j, String string, String string2, String price2, String rating2, boolean b, Blob imagepath2) 
+	{
+		
+	}
+
+	public int getMenuId() {
+		return menuId;
+	}
+
+	public void setMenuId(int menuId) {
+		this.menuId = menuId;
+	}
+
+	public int getRestaurantId() {
+		return restaurantId;
+	}
+
+	public void setRestaurantId(int restaurantId) {
+		this.restaurantId = restaurantId;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public int getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+
+	public String getIsAvailable() {
+		return isAvailable;
+	}
+
+	public void setIsAvailable(String isAvailable) {
+		this.isAvailable = isAvailable;
+	}
+
+	public Blob getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(Blob imagePath) {
+		this.imagePath = imagePath;
+	}
+	
+	
+	
+}

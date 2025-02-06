@@ -1,0 +1,204 @@
+package DAO_Implementation;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.Utility.DBConnection;
+
+import DAO.java.dao1;
+import User.java.UserId;
+
+public class UserDAOimpl implements dao1 
+{
+	private final static String INSERT_QUERY = "Insert into 'user' ('name', 'username', 'password', 'email', 'phone', 'address', 'role')  VALUES  (?,?,?,?,?,?,?) ";       // userId,currentDate will given by database
+	private final static String GET_USER = "select * from 'user' where 'userId' = ? ";
+	private final static String UPDATE_QUERY = "update 'user' set 'name' = ?  'password' = ?  'phone' = ?  'address' = ?  'role' = ?";
+	private final static String DELETE_QUERY = "delete from 'user' where 'userId' = ?";
+	private final static String GET_QUERY = "select * from 'user' ";
+	
+	
+	private int userId;
+	private Connection conn;
+
+	@Override
+	public void addUser(UserId user)
+	{
+		
+		
+		try (Connection conn = DBConnection.getConnection();
+			 PreparedStatement prepareStatement = conn.prepareStatement(INSERT_QUERY))
+			{
+			
+			prepareStatement.setString(1, user.getName());
+			prepareStatement.setString(2, user.getUsername());
+			prepareStatement.setString(3, user.getPassword());
+			prepareStatement.setString(4, user.getEmail());
+			prepareStatement.setLong(5, user.getPhone());
+			prepareStatement.setString(6, user.getAddress());
+			prepareStatement.setString(7, user.getRole());
+			
+			
+			int res = prepareStatement.executeUpdate();
+			
+			
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public UserId getUserId(int uerId) 
+	{
+		
+		UserId user = null;
+		
+		try(Connection conn = DBConnection.getConnection();
+			PreparedStatement prepareStatement = conn.prepareStatement(GET_USER);)
+		{
+			prepareStatement.setInt(1, userId);
+			ResultSet res = prepareStatement.executeQuery();
+			
+			user = extractUser(res);
+			
+			
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return user;
+	}
+
+
+
+	@Override
+	public void updateUserId(UserId user) 
+	{
+		
+		Connection conn = null;
+		
+		PreparedStatement prepareStatement;
+		try 
+		{
+			prepareStatement = conn.prepareStatement(UPDATE_QUERY);
+			conn = DBConnection.getConnection();
+			
+			prepareStatement.setString(1, user.getName());
+			prepareStatement.setString(2, user.getPassword());
+			prepareStatement.setLong(3, user.getPhone());
+			prepareStatement.setString(4, user.getAddress());
+			prepareStatement.setString(5, user.getRole());
+			
+			prepareStatement.executeUpdate();
+			
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
+	
+	
+	@Override
+	public void deleteUserId(int userId) 
+	{
+		
+		
+		Connection conn = DBConnection.getConnection();
+		try 
+		{
+			PreparedStatement prepareStatement = conn.prepareStatement(DELETE_QUERY);
+			
+			prepareStatement.setInt(1, userId);
+			prepareStatement.executeUpdate();
+			
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+	}
+
+	
+	
+	
+	@Override
+	public List<UserId> getAllUsers() 
+	{
+		
+		ArrayList<UserId> userList = new ArrayList<> ();
+		
+		try 
+		{
+			Statement statement = conn.createStatement();
+			Connection conn = DBConnection.getConnection();
+			ResultSet res = statement.executeQuery(GET_QUERY);
+			
+			while (res.next())
+			{
+				UserId user = extractUser(res);
+				
+				userList.add(user);
+				
+			}
+				
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return userList;
+	}
+
+
+
+	
+	
+	UserId extractUser(ResultSet res) throws SQLException
+	{
+		int userId = res.getInt("userId");
+		String name = res.getString("name");
+		String username = res.getString("username");
+		String password = res.getString("password");
+		String email = res.getString("email");
+		String phone = res.getString("phone");
+		String address = res.getString("address");
+		String role = res.getString("role");
+		
+		UserId user = new UserId(userId, name, username, password, email, phone, address, role, null, null);
+		
+		return user;
+	}
+
+
+	
+
+
+	
+}

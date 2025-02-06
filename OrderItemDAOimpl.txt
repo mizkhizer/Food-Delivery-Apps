@@ -1,0 +1,222 @@
+package DAO_Implementation;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.Utility.DBConnection;
+
+import DAO.java.dao3;
+import User.java.Order;
+import User.java.Orderitem;
+
+
+
+
+public class OrderItemDAOimpl 
+{
+	public final static String INSERT_ORDER_ITEM_QUERY = "INSERT INTO ORDERITEM (ORDER_ID, MENU_ID, QUANTITY, TOTALPRICE) " + "VALUES (?, ?, ?, ?)";
+	public final static String GET_ORDER_ITEM_QUERY =  "SELECT * FROM ORDERITEM WHERE ORDERITEM_ID = ?";
+	public final static String UPDATE_ORDER_ITEM_QUERY = "UPDATE ORDERITEM SET ORDER_ID = ?, MENU_ID = ?, QUANTITY = ?, TOTALPRICE = ? " + "WHERE ORDERITEM_ID = ?";
+	public final static String DELETE_ORDER_ITEM_QUERY =  "DELETE FROM ORDERITEM WHERE ORDERITEM_ID = ?";
+	public final static String GET_ALL_ORDER_ITEMS_QUERY = "SELECT * FROM ORDERITEM WHERE ORDER_ID = ?";
+	
+	
+	public class OrderltemDAImpl implements dao3
+	{
+
+		public void addOrderItem(OrderDAOimpl orderItem) 
+	    {
+	        
+	        try (Connection connection = DBConnection.getConnection();
+	             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ORDER_ITEM_QUERY)) {
+
+	            preparedStatement.setInt(1, orderItem.getOrderId());
+	            preparedStatement.setInt(2, orderItem.getMenuId());
+	            preparedStatement.setInt(3, orderItem.getQuantity());
+	            preparedStatement.setInt(4, orderItem.getTotalPrice());
+
+	            preparedStatement.executeUpdate();
+
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    
+		
+		
+		
+		
+		
+		
+		
+		public Orderitem getOrderItem(int orderItemId) 
+	    {
+	        
+	        Orderitem orderitem = null;
+
+	        try (Connection connection = DBConnection.getConnection();
+	             PreparedStatement preparedStatement = connection.prepareStatement(GET_ORDER_ITEM_QUERY)) {
+
+	            preparedStatement.setInt(1, orderItemId);
+	            ResultSet resultSet = preparedStatement.executeQuery();
+
+	         
+	            if (resultSet.next()) {
+	                int orderId = resultSet.getInt("ORDER_ID");
+	                int menuId = resultSet.getInt("MENU_ID");
+	                int quantity = resultSet.getInt("QUANTITY");
+	                double totalPrice = resultSet.getDouble("TOTALPRICE");
+
+	                orderitem = new Orderitem(orderItemId, orderId, menuId, quantity, (int) totalPrice);
+	            }
+
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+
+	        return orderitem;
+	    }
+
+	   
+		
+		
+		
+		
+		
+		
+		
+		public void updateOrderItem(Orderitem orderItem) 
+	    {
+	        
+
+	        try (Connection connection = DBConnection.getConnection();
+	             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ORDER_ITEM_QUERY)) {
+
+	            preparedStatement.setInt(1, orderItem.getOrderId());
+	            preparedStatement.setInt(2, orderItem.getMenuId());
+	            preparedStatement.setInt(3, orderItem.getQuantity());
+	            preparedStatement.setDouble(4, orderItem.getTotalPrice());
+	            preparedStatement.setInt(5, orderItem.getOrderItemId());
+
+	            preparedStatement.executeUpdate();
+
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	   
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public void deleteOrderItem(int orderItemId) 
+	    {
+	        
+
+	        try (Connection connection = DBConnection.getConnection();
+	             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ORDER_ITEM_QUERY)) {
+
+	            preparedStatement.setInt(1, orderItemId);
+	            preparedStatement.executeUpdate();
+
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public List<Orderitem> getAllOrderItems(int orderId) 
+	    {
+	        
+	        List<Orderitem> orderItems = new ArrayList<>();
+
+	        try (Connection connection = DBConnection.getConnection();
+	             PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_ORDER_ITEMS_QUERY)) {
+
+	            preparedStatement.setInt(1, orderId);
+	            ResultSet resultSet = preparedStatement.executeQuery();
+
+	            while (resultSet.next()) {
+	                int orderItemId = resultSet.getInt("ORDERITEM_ID");
+	                int menuId = resultSet.getInt("MENU_ID");
+	                int quantity = resultSet.getInt("QUANTITY");
+	                double totalPrice = resultSet.getDouble("TOTALPRICE");
+
+	                Orderitem orderItem = new Orderitem(orderItemId, orderId, menuId, quantity, (int) totalPrice);
+	                orderItems.add(orderItem);
+	            }
+
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+
+	        return orderItems;
+	    }
+
+		
+	    
+	   
+		
+		
+		
+		
+		
+		
+		public List<Order> getAllOrderItems() 
+		{
+			
+			return null;
+		}
+
+
+
+
+
+
+
+
+
+		@Override
+		public void addOrderItem(Orderitem orderItem) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+
+
+
+
+
+
+
+		@Override
+		public void updateOrderItem(OrderltemDAImpl orderItem) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
+}
